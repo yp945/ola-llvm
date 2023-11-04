@@ -1,2 +1,3 @@
 # ola-llvm
-Ola llvm precompiled
+
+The ola language depends on LLVM. This repository provides precompiled LLVM packages for different operating systems.
