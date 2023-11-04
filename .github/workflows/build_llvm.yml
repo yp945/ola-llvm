@@ -1,14 +1,13 @@
+name: Build LLVM Binaries
 on:
   push:
     tags:
     - 'llvm*'
 
-name: Build LLVM Binaries
-
 jobs:
   linux-x86-64:
     name: Linux x86-64
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
     - name: Checkout sources
       uses: actions/checkout@v3.1.0
@@ -34,35 +33,9 @@ jobs:
         asset_name: llvm15.0-linux-x86-64.tar.xz
         tag: ${{ github.ref }}
 
-  linux-arm64:
-    name: Linux arm64
-    runs-on: linux-arm64
-    steps:
-    - name: Checkout sources
-      uses: actions/checkout@v3.1.0
-      with:
-        submodules: recursive
-    - run: git clone --depth 1 --branch llvmorg-15.0.0 https://github.com/llvm/llvm-project
-    - run: cmake -G Ninja -DLLVM_ENABLE_ASSERTIONS=On -DLLVM_ENABLE_TERMINFO=Off
-        -DLLVM_ENABLE_LIBXML2=Off -DLLVM_ENABLE_ZLIB=Off
-        -DLLVM_ENABLE_PROJECTS='clang;lld'
-        -DLLVM_ENABLE_ZSTD=Off
-        -DCMAKE_BUILD_TYPE=MinSizeRel -DCMAKE_INSTALL_PREFIX=../llvm15.0 llvm
-      working-directory: ./llvm-project/
-    - run: cmake --build . --target install
-      working-directory: ./llvm-project/
-    - run: tar Jcf ./llvm15.0-linux-arm64.tar.xz ./llvm15.0/
-    - name: Upload llvm
-      uses: svenstaro/upload-release-action@v2
-      with:
-        repo_token: ${{ secrets.GITHUB_TOKEN }}
-        file: llvm15.0-linux-arm64.tar.xz
-        asset_name: llvm15.0-linux-arm64.tar.xz
-        tag: ${{ github.ref }}
-
   windows:
     name: Windows
-    runs-on: solang-windows-latest
+    runs-on: windows-latest
     steps:
     - name: Checkout sources
       uses: actions/checkout@v3.1.0
@@ -125,7 +98,7 @@ jobs:
 
   mac-intel:
     name: Mac Intel
-    runs-on: macos-11
+    runs-on: macos-latest
     steps:
     - name: Checkout sources
       uses: actions/checkout@v3
