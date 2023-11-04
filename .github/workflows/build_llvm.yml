@@ -69,7 +69,7 @@ jobs:
 
   mac-arm:
     name: Mac Arm
-    runs-on: macos-13-arm64
+    runs-on: macos-13-xl
     steps:
     - name: Checkout sources
       uses: actions/checkout@v3
